@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "title": "Image One",
+    "description": "This is the first image.",
+    "url": "https://picsum.photos/1920/1080?random=1"
+  },
+  {
+    "id": 2,
+    "title": "Image Two",
+    "description": "This is the second image.",
+    "url": "https://picsum.photos/1920/1080?random=2"
+  },
+  {
+    "id": 3,
+    "title": "Image Three",
+    "description": "This is the third image.",
+    "url": "https://picsum.photos/1920/1080?random=3"
+  },
+  {
+    "id": 4,
+    "title": "Image Four",
+    "description": "This is the fourth image.",
+    "url": "https://picsum.photos/1920/1080?random=4"
+  },
+  {
+    "id": 5,
+    "title": "Image Five",
+    "description": "This is the fifth image.",
+    "url": "https://picsum.photos/1920/1080?random=5"
+  },
+  {
+    "id": 6,
+    "title": "Image Six",
+    "description": "This is the sixth image.",
+    "url": "https://picsum.photos/1920/1080?random=6"
+  }
+]
