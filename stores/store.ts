@@ -45,6 +45,39 @@ export const useStore = defineStore('store', {
       )
     
       this.images = imagesWithMeta
+    },
+    
+    async deleteImage(image) {
+      const supabase = useSupabaseClient()
+      const toast = useToast()
+    
+      try {
+        // 1. Delete the image from Supabase storage
+        const { error: deleteStorageError } = await supabase.storage.from('gallery').remove([image.name])
+        if (deleteStorageError) {
+          throw deleteStorageError
+        }
+    
+        // 2. Delete the metadata from the gallery_metadata table
+        const { error: deleteMetaError } = await supabase
+          .from('gallery_metadata')
+          .delete()
+          .eq('file_name', image.name)
+    
+        if (deleteMetaError) {
+          throw deleteMetaError
+        }
+    
+        // 3. Fetch the updated list of images
+        await this.fetchImages()
+    
+        // Show a success toast
+        toast.add({ title: 'Image deleted successfully', color: 'success' })
+    
+      } catch (error) {
+        // Show an error toast if something fails
+        toast.add({ title: 'Error deleting image', description: error.message, color: 'red' })
+      }
     }
     
   }

@@ -5,7 +5,7 @@
     <!-- Title and Description inputs -->
     <div class="space-y-4 max-w-sm">
       <UInput 
-        ref="fileInput" 
+        v-model="filename"
         type="file" 
         trailing-icon="i-lucide-file" 
         class="block" 
@@ -43,7 +43,8 @@
   const store = useStore()
   const images = computed(() => store.images)
   const toast = useToast()
-  const file = ref(null) // Store the file
+  const file = ref('') // Store the file
+  const filename = ref('') // Store the file
   const imageTitle = ref('') // Title input field
   const imageDescription = ref('') // Description input field
   const supabase = useSupabaseClient()
@@ -92,7 +93,8 @@
       await store.fetchImages()
 
       // Clear input fields after upload
-      file.value = null
+      file.value = ''
+      filename.value = ''
       imageTitle.value = ''
       imageDescription.value = ''
     } catch (insertError) {
