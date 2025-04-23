@@ -9,7 +9,7 @@
     </NuxtLink>
     <UButton 
       @click="store.deleteImage(image)" 
-      class="w-fit mt-6 hover:cursor-pointer" 
+      class="w-fit mt-4 hover:cursor-pointer" 
       color="error">
       Delete
     </UButton>
