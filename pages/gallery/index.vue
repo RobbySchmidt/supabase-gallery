@@ -22,15 +22,14 @@
         label="Image Description" 
         placeholder="Enter a description" 
         class="block" />
-    </div>
 
-    <!-- Submit Button to Upload Image and Metadata -->
-    <UButton 
-      @click="uploadImage" 
-      class="mt-4 block w-fit"
-      :disabled="!file || !imageTitle || !imageDescription">
-      Upload Image
-    </UButton>
+      <UButton 
+        @click="uploadImage" 
+        class="block w-fit"
+        :disabled="!file || !imageTitle || !imageDescription">
+        Upload Image
+      </UButton>
+    </div>
 
     <!-- Image Gallery -->
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
