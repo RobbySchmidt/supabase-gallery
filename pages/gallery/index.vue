@@ -4,19 +4,20 @@
     
     <!-- Title and Description inputs -->
     <div class="space-y-4 max-w-sm">
+      <span class="mb-1 block font-semibold">Select Image</span>
       <UInput 
         v-model="filename"
         type="file" 
         trailing-icon="i-lucide-file" 
         class="block" 
         @change="handleFileChange" />
-        
+      <span class="mb-1 block font-semibold">Image Title</span>  
       <UInput 
         v-model="imageTitle" 
         label="Image Title" 
         placeholder="Enter a title" 
         class="block" />
-
+      <span class="mb-1 block font-semibold">Image Description</span>
       <UInput 
         v-model="imageDescription" 
         label="Image Description" 
