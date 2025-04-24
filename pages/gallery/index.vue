@@ -26,7 +26,7 @@
 
       <UButton 
         @click="uploadImage" 
-        class="block w-fit"
+        class="block w-fit cursor-pointer"
         :disabled="!file || !imageTitle || !imageDescription">
         Upload Image
       </UButton>
