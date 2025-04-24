@@ -4,33 +4,33 @@
     
     <!-- Title and Description inputs -->
     <div class="space-y-4 max-w-sm">
+      <span class="mb-1 block font-semibold">Select Image</span>
       <UInput 
-        ref="fileInput" 
+        v-model="filename"
         type="file" 
         trailing-icon="i-lucide-file" 
         class="block" 
         @change="handleFileChange" />
-        
+      <span class="mb-1 block font-semibold">Image Title</span>  
       <UInput 
         v-model="imageTitle" 
         label="Image Title" 
         placeholder="Enter a title" 
         class="block" />
-
+      <span class="mb-1 block font-semibold">Image Description</span>
       <UInput 
         v-model="imageDescription" 
         label="Image Description" 
         placeholder="Enter a description" 
         class="block" />
-    </div>
 
-    <!-- Submit Button to Upload Image and Metadata -->
-    <UButton 
-      @click="uploadImage" 
-      class="mt-4 block w-fit"
-      :disabled="!file || !imageTitle || !imageDescription">
-      Upload Image
-    </UButton>
+      <UButton 
+        @click="uploadImage" 
+        class="block w-fit cursor-pointer"
+        :disabled="!file || !imageTitle || !imageDescription">
+        Upload Image
+      </UButton>
+    </div>
 
     <!-- Image Gallery -->
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -43,7 +43,8 @@
   const store = useStore()
   const images = computed(() => store.images)
   const toast = useToast()
-  const file = ref(null) // Store the file
+  const file = ref('') // Store the file
+  const filename = ref('') // Store the file
   const imageTitle = ref('') // Title input field
   const imageDescription = ref('') // Description input field
   const supabase = useSupabaseClient()
@@ -92,7 +93,8 @@
       await store.fetchImages()
 
       // Clear input fields after upload
-      file.value = null
+      file.value = ''
+      filename.value = ''
       imageTitle.value = ''
       imageDescription.value = ''
     } catch (insertError) {
