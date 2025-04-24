@@ -22,7 +22,7 @@ export const useStore = defineStore('store', {
     
       // Fetch metadata
       const { data: metadata, error: metaError } = await supabase
-        .from('gallery_metadata')
+        .from('gallery')
         .select('*')
     
       if (metaError) throw new Error(metaError.message)
@@ -60,7 +60,7 @@ export const useStore = defineStore('store', {
     
         // 2. Delete the metadata from the gallery_metadata table
         const { error: deleteMetaError } = await supabase
-          .from('gallery_metadata')
+          .from('gallery')
           .delete()
           .eq('file_name', image.name)
     
