@@ -76,7 +76,7 @@
     // Upload metadata (title and description) to the gallery_metadata table
     try {
       const { data: insertData, error: insertError } = await supabase
-        .from('gallery_metadata')
+        .from('gallery')
         .insert([
           {
             file_name: filePath, // file name to link to storage
