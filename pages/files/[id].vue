@@ -1,9 +1,11 @@
 <template>
   <div class="p-6 max-w-4xl mx-auto space-y-6">
-    <UButton 
-      @click="$router.back()" 
-      class="cursor-pointer group">
-      <UIcon name="arrow-long-left" class="md:group-hover:-translate-x-1 duration-300 ease-in-out"/>
+    <UButton
+      @click="$router.back" 
+      class="group cursor-pointer">
+      <Icon 
+        name="heroicons:arrow-long-left"
+        class="inline-block transition-transform group-hover:-translate-x-1 w-5 h-5"/>
       Back to Gallery
     </UButton>
     <div class="shadow rounded-md overflow-hidden">
