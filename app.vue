@@ -6,6 +6,16 @@
   </UApp>
 </template>
 
+<script setup>
+  const store = useStore()
+
+  const loadData = ref(false)
+
+  Promise.all([store.getFiles()]).then((values) => {
+    loadData.value = true;  
+  });
+</script>
+
 <style>
   .page-enter-active,
   .page-leave-active {
