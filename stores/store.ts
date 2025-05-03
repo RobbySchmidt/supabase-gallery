@@ -3,13 +3,18 @@ import { useSupabaseClient } from '#imports'
 
 export const useStore = defineStore('store', {
   state: () => ({
-    images: []
+    images: [],
+    files: []
   }),
   getters: {
     getImageById: (state) => (id: any) => {
       return state.images.find(image => image.id === id)
-    }    
+    },
+    getFileById: (state) => (id: any) => {
+      return state.files.find(image => image.id === id)   
+    },
   },
+
   actions: {
     async fetchImages() {
       const supabase = useSupabaseClient()
@@ -78,7 +83,16 @@ export const useStore = defineStore('store', {
         // Show an error toast if something fails
         toast.add({ title: 'Error deleting image', description: error.message, color: 'red' })
       }
-    }
     
+    },
+    
+    async getFiles() {
+      const supabase = useSupabaseClient()
+      const { data: files, error } = await supabase
+      .from('files')
+      .select('*')
+        
+      this.files = files
+    }
   }
 })
