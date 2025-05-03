@@ -11,7 +11,7 @@
     <div class="shadow rounded-md overflow-hidden">
       <img 
         class="block w-full"
-        :src="image.image" 
+        :src="image.url" 
         :alt="image.title">
       <div
         v-html="image.description"
