@@ -15,16 +15,48 @@
       <div v-html="image.description"></div>
     </UCard>
 
-    <div v-else class="text-center text-gray-500">Image not found</div>
+    <div class="space-x-2 space-y-2">
+      <UInput v-model="title" placeholder="Title"/>
+      <UTextarea rows="1" v-model="description" placeholder="Description"/>
+      <UButton 
+        @click="updateFile(image)" 
+        class="w-fit mt-4 hover:cursor-pointer" 
+        color="success">
+        Update
+      </UButton>
+      <UButton 
+        @click="store.deleteFile(image)" 
+        class="w-fit mt-4 hover:cursor-pointer" 
+        color="error">
+        Delete
+      </UButton>
+    </div>
+
   </div>
 </template>
 
 <script setup>
   
-  const { getFileById } = useStore()
+  const store = useStore()
   const { params } = useRoute()
+  const title = ref('')
+  const description = ref('')
 
   const image = computed(() => {
-    return getFileById(params.id)
+    return store.getFileById(params.id)
   })
+
+  async function updateFile(image) {
+    try {
+      await store.updateFile(image.id, {
+        title: title.value || image.title,
+        description: description.value || image.description
+      })
+    } catch (err) {
+      console.error('Update failed:', err)
+    }
+    title.value = ''
+    description.value = ''
+  }
+
 </script>

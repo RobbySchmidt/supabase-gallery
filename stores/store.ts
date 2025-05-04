@@ -44,14 +44,37 @@ export const useStore = defineStore('store', {
 
           await this.getFiles()
     
-        // Show a success toast
-        toast.add({ title: 'Image deleted successfully', color: 'success' })
-    
-      } catch (error) {
-        // Show an error toast if something fails
-        toast.add({ title: 'Error deleting image', description: error.message, color: 'red' })
-      }
-    
+          // Show a success toast
+          toast.add({ title: 'Image deleted successfully', color: 'success' })
+
+          
+        } catch (error) {
+          // Show an error toast if something fails
+          toast.add({ title: 'Error deleting image', description: error.message, color: 'red' })
+        }
+        
+        navigateTo('/files')
     },
+
+    async updateFile(id, updatedData) {
+      const supabase = useSupabaseClient()
+      const toast = useToast()
+    
+      const { data, error } = await supabase
+        .from('files')
+        .update(updatedData)
+        .eq('id', id)
+        .select()
+    
+      if (error) {
+        toast.add({ title: 'Error updating file', description: error.message, color: 'red' })
+        throw error
+      } else {
+        toast.add({ title: 'File updated successfully', color: 'success' })
+        await this.getFiles()
+        return data
+      }
+    }
+    
   }
 })
