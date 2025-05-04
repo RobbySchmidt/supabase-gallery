@@ -4,10 +4,10 @@
       <UInput v-model="fileInput" type="file" @change="handleFileUpload" placeholder="Image"/>
       <UInput v-model="title" placeholder="Title"/>
       <UInput v-model="description" placeholder="Description"/>
-      <UButton @click="test()" label="Upload" class="cursor-pointer"/>
+      <UButton @click="upload()" label="Upload" class="cursor-pointer"/>
     </div>
     <div class="xl:w-8/12 mx-auto grid md:grid-cols-2 xl:grid-cols-3 gap-6">
-      <cardFiles :data="files" />
+      <card :data="files" />
     </div>
   </div>
 </template>
@@ -16,7 +16,7 @@
   const store = useStore()
   const { files } = storeToRefs(store)
   const supabase = useSupabaseClient()
-
+  const toast = useToast()
   const image = ref(null) // actual file
   const fileInput = ref(null)
   const title = ref('')
@@ -27,7 +27,7 @@
     image.value = event.target.files[0]
   }
 
-  async function test() {
+  async function upload() {
     if (!image.value) return
 
     const file = image.value
@@ -53,6 +53,7 @@
           title: title.value,
           description: description.value,
           url: urlData.publicUrl, // add this line!
+          path: fileName
         },
       ])
 
@@ -64,6 +65,7 @@
     title.value = ''
     description.value = ''
     await store.getFiles() // make sure this method fetches from Supabase correctly
+    toast.add({ title: 'Image added successfully', color: 'success' })
   }
 
 </script>

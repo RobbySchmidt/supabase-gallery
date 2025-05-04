@@ -1,23 +1,21 @@
 <template>
-  <div class="p-6 max-w-4xl mx-auto space-y-6">
+  <div class="p-6 max-w-3xl mx-auto">
     <UButton
       @click="$router.back" 
-      class="group cursor-pointer">
+      class="group mb-4 gap-1 cursor-pointer">
       <Icon 
         name="heroicons:arrow-long-left"
         class="inline-block transition-transform group-hover:-translate-x-1 w-5 h-5"/>
       Back to Gallery
     </UButton>
-    <div class="shadow rounded-md overflow-hidden">
-      <img 
-        class="block w-full"
-        :src="image.url" 
-        :alt="image.title">
-      <div
-        v-html="image.description"
-        class="block text-justify p-4">
-      </div>
-    </div>
+
+    <UCard v-if=image>
+      <img :src="image.url" :alt="image.title" class="w-full block rounded" />
+      <h2 class="mt-2 text-xl font-semibold">{{ image.title }}</h2>
+      <div v-html="image.description"></div>
+    </UCard>
+
+    <div v-else class="text-center text-gray-500">Image not found</div>
   </div>
 </template>
 
