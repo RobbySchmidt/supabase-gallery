@@ -6,7 +6,7 @@
       <Icon 
         name="heroicons:arrow-long-left"
         class="inline-block transition-transform group-hover:-translate-x-1 w-5 h-5"/>
-      Back to Gallery
+        Back to Gallery
     </UButton>
 
     <UCard v-if=image>

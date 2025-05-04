@@ -3,7 +3,7 @@
     <div class="xl:w-8/12 mx-auto space-x-6">
       <UInput v-model="fileInput" type="file" @change="handleFileUpload" placeholder="Image"/>
       <UInput v-model="title" placeholder="Title"/>
-      <UInput v-model="description" placeholder="Description"/>
+      <UTextarea rows="1" v-model="description" placeholder="Description"/>
       <UButton @click="upload()" label="Upload" class="cursor-pointer"/>
     </div>
     <div class="xl:w-8/12 mx-auto grid md:grid-cols-2 xl:grid-cols-3 gap-6">
