@@ -46,7 +46,7 @@
       password,
     });
 
-    navigateTo('/gallery')
+    navigateTo('/files')
       toast.add({ title: 'Success', description: 'You have been logged in', color: 'success' })
       console.log(event.data)
   }
