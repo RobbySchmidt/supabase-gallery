@@ -2,9 +2,9 @@
   <div class="p-6 max-w-3xl mx-auto space-y-4">
     <Button
       @click="$router.back" 
-      class="group gap-1 cursor-pointer">
+      class="group gap-1">
       <MoveLeft
-        class="inline-block transition-transform group-hover:-translate-x-1 w-5 h-5"/>
+        class="inline-block transition-transform lg:group-hover:-translate-x-1 w-5 h-5"/>
         Back to Gallery
     </Button>
     <div v-if=image class="border p-5 rounded">
