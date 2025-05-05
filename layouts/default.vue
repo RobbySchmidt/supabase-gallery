@@ -13,9 +13,13 @@
 </template>
 
 <script setup>
+  import { toast } from 'vue-sonner'
   const supabase = useSupabaseClient()
   async function signOut() {
     const { error } = await supabase.auth.signOut() 
       navigateTo('/login') 
+      toast('Success', {
+        description: 'You have been logged out'
+      })
     }
 </script>
