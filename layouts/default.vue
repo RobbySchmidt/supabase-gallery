@@ -1,11 +1,11 @@
 <template>
   <div class="p-6 space-y-6">
-    <UButton
+    <Button
       @click="signOut" 
-      class="hover:cursor-pointer ml-auto w-fit block" 
-      color="error">
+      class="ml-auto w-fit block" 
+      variant="destructive">
       Logout
-    </UButton>
+    </Button>
     <div>
       <slot />
     </div>
@@ -14,14 +14,8 @@
 
 <script setup>
   const supabase = useSupabaseClient()
-  const toast = useToast()
   async function signOut() {
-    const { error } = await supabase.auth.signOut()
-    if (error) {
-      toast.add({ title: 'Logout Failed', description: error.message })
-    } else {
-      navigateTo('/login')
-      toast.add({ title: 'Success', description: 'You have been signed out', color: 'success' })
+    const { error } = await supabase.auth.signOut() 
+      navigateTo('/login') 
     }
-  }
 </script>
