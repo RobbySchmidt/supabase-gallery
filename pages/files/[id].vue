@@ -19,14 +19,13 @@
       <Textarea rows="1" v-model="description" placeholder="Description"/>
       <Button 
         @click="updateFile(image)" 
-        class="w-fit hover:cursor-pointer" 
-        color="success">
+        class="w-fit hover:cursor-pointer">
         Update
       </Button>
       <Button 
         @click="store.deleteFile(image)" 
         class="w-fit hover:cursor-pointer" 
-        color="error">
+        variant="destructive">
         Delete
       </Button>
     </div>
