@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { useSupabaseClient } from '#imports'
+import { toast } from 'vue-sonner'
 
 export const useStore = defineStore('store', {
   state: () => ({
@@ -42,7 +43,9 @@ export const useStore = defineStore('store', {
           .eq('id', image.id)
 
           await this.getFiles()
-    
+          toast('Success', {
+            description: 'Image deleted successfully'
+          })
 
           
         } catch (error) {
@@ -64,6 +67,9 @@ export const useStore = defineStore('store', {
         throw error
       } else {
         await this.getFiles()
+        toast('Success', {
+          description: 'Image updated successfully'
+        })
         return data
       }
     }

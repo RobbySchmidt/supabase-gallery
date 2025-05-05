@@ -25,6 +25,7 @@
 </template>
 
 <script setup>
+  import { toast } from 'vue-sonner'
   const store = useStore()
   const supabase = useSupabaseClient()
   const image = ref(null) // actual file
@@ -75,6 +76,9 @@
     title.value = ''
     description.value = ''
     await store.getFiles() // make sure this method fetches from Supabase correctly
+    toast('Success', {
+      description: 'Image uploaded successfully'
+    })
   }
 
 </script>

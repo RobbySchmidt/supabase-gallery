@@ -1,11 +1,11 @@
 <template>
   <div class="container mx-auto">
-    <form class="w-2/3 space-y-6 mx-auto" @submit="onSubmit">
+    <form class="max-w-xl space-y-6 mx-auto" @submit="onSubmit">
       <FormField v-slot="{ componentField }" name="email" :validate-on-blur="!isFieldDirty">
         <FormItem>
           <FormLabel>Email</FormLabel>
           <FormControl>
-            <Input v-model="email" type="text" placeholder="Email" v-bind="componentField" />
+            <Input v-model="email" type="email" placeholder="Email" v-bind="componentField" />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -14,7 +14,7 @@
         <FormItem>
           <FormLabel>Password</FormLabel>
           <FormControl>
-            <Input v-model="password" type="text" placeholder="Password" v-bind="componentField" />
+            <Input v-model="password" type="password" placeholder="Password" v-bind="componentField" />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -34,6 +34,7 @@
   import { useForm } from 'vee-validate'
   import { h } from 'vue'
   import * as z from 'zod'
+  import { toast } from 'vue-sonner'
 
   const email = ref('')
   const password = ref('')
@@ -62,6 +63,9 @@
 
   console.log(values)
 
+  toast('Success', {
+    description: 'You have been logged in'
+  })
   navigateTo('/files');
 });
 
