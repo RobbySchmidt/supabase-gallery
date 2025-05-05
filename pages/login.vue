@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container mx-auto">
     <form class="w-2/3 space-y-6 mx-auto" @submit="onSubmit">
       <FormField v-slot="{ componentField }" name="email" :validate-on-blur="!isFieldDirty">
         <FormItem>
