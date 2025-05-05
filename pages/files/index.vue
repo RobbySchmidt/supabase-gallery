@@ -1,10 +1,10 @@
 <template>
   <div class="container mx-auto py-12 px-6 space-y-6">
-    <div class="xl:w-8/12 mx-auto space-x-6">
-      <UInput v-model="fileInput" type="file" @change="handleFileUpload" placeholder="Image"/>
-      <UInput v-model="title" placeholder="Title"/>
-      <UTextarea rows="1" v-model="description" placeholder="Description"/>
-      <UButton @click="upload()" label="Upload" class="cursor-pointer"/>
+    <div class="xl:w-8/12 mx-auto space-x-6 space-y-6">
+      <Input v-model="fileInput" type="file" @change="handleFileUpload" placeholder="Image"/>
+      <Input v-model="title" placeholder="Title"/>
+      <Textarea rows="1" v-model="description" placeholder="Description"/>
+      <Button @click="upload()">Upload</Button>
     </div>
     <div class="xl:w-8/12 mx-auto grid md:grid-cols-2 xl:grid-cols-3 gap-6">
       <card :data="files" />
@@ -16,7 +16,6 @@
   const store = useStore()
   const { files } = storeToRefs(store)
   const supabase = useSupabaseClient()
-  const toast = useToast()
   const image = ref(null) // actual file
   const fileInput = ref(null)
   const title = ref('')
@@ -65,7 +64,6 @@
     title.value = ''
     description.value = ''
     await store.getFiles() // make sure this method fetches from Supabase correctly
-    toast.add({ title: 'Image added successfully', color: 'success' })
   }
 
 </script>

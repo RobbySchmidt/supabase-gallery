@@ -1,53 +1,68 @@
 <template>
-  <div class="container max-w-2xl mx-auto">
-    <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
-      <UFormField label="Email" name="email">
-        <UInput v-model="state.email" class="w-full"/>
-      </UFormField>
-
-      <UFormField label="Password" name="password">
-        <UInput v-model="state.password" type="password" class="w-full"/>
-      </UFormField>
-
-      <UButton type="submit" class="hover:cursor-pointer">
+  <div class="container">
+    <form class="w-2/3 space-y-6 mx-auto" @submit="onSubmit">
+      <FormField v-slot="{ componentField }" name="email" :validate-on-blur="!isFieldDirty">
+        <FormItem>
+          <FormLabel>Email</FormLabel>
+          <FormControl>
+            <Input v-model="email" type="text" placeholder="Email" v-bind="componentField" />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
+      <FormField v-slot="{ componentField }" name="password" :validate-on-blur="!isFieldDirty">
+        <FormItem>
+          <FormLabel>Password</FormLabel>
+          <FormControl>
+            <Input v-model="password" type="text" placeholder="Password" v-bind="componentField" />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
+      <Button type="submit">
         Login
-      </UButton>
-    </UForm>
+      </Button>
+    </form>
   </div>
 </template>
 
 <script setup lang="ts">
-  import * as z from 'zod'
-  import type { FormSubmitEvent } from '@nuxt/ui'
-
   definePageMeta({
     layout: 'login'
   })
+  import { toTypedSchema } from '@vee-validate/zod'
+  import { useForm } from 'vee-validate'
+  import { h } from 'vue'
+  import * as z from 'zod'
 
-  const schema = z.object({
+  const email = ref('')
+  const password = ref('')
+  
+  const formSchema = toTypedSchema(z.object({
     email: z.string().email('Invalid email'),
     password: z.string().min(8, 'Must be at least 8 characters')
-  })
-
-  type Schema = z.output<typeof schema>
-
-  const state = reactive<Partial<Schema>>({
-    email: undefined,
-    password: undefined
-  })
-  const supabase = useSupabaseClient();
+  }))
   
-  const toast = useToast()
-  async function onSubmit(event: FormSubmitEvent<Schema>) {
-    const { email, password } = event.data;
+  const { isFieldDirty, handleSubmit } = useForm({
+    validationSchema: formSchema,
+  })
+  
+  const onSubmit = handleSubmit(async (values) => {
+  const supabase = useSupabaseClient();
 
-    await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+  const { error } = await supabase.auth.signInWithPassword({
+    email: values.email,
+    password: values.password,
+  });
 
-    navigateTo('/files')
-      toast.add({ title: 'Success', description: 'You have been logged in', color: 'success' })
-      console.log(event.data)
+  if (error) {
+    console.error('Login failed:', error.message);
+    return;
   }
+
+  console.log(values)
+
+  navigateTo('/files');
+});
+
 </script>
