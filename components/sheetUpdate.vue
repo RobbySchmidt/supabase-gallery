@@ -14,7 +14,7 @@
           <Input v-model="title" placeholder="Title"/>
           <Textarea rows="1" v-model="description" placeholder="Description"/>
           <Button 
-            @click="updateFile(image)" 
+            @click="store.updateFile(image.id, title, description)" 
             class="w-fit hover:cursor-pointer">
             Update
           </Button>
@@ -35,19 +35,6 @@
     image: Object
   })
   const store = useStore()
-  const title = ref('')
-  const description = ref('')
-
-  async function updateFile(image) {
-    try {
-      await store.updateFile(image.id, {
-        title: title.value || image.title,
-        description: description.value || image.description
-      })
-    } catch (err) {
-      console.error('Update failed:', err)
-    }
-    title.value = ''
-    description.value = ''
-  }
+  const title = ref(props.image.title || '')
+  const description = ref(props.image.description || '')
 </script>
