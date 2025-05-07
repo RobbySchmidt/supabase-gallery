@@ -54,12 +54,17 @@ export const useStore = defineStore('store', {
         navigateTo('/files')
     },
 
-    async updateFile(id, updatedData) {
+    async updateFile(id, title, description) {
       const supabase = useSupabaseClient()
     
       const { data, error } = await supabase
         .from('files')
-        .update(updatedData)
+        .update(
+          { 
+            title, 
+            description 
+          }
+        )
         .eq('id', id)
         .select()
     
