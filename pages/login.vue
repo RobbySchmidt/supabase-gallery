@@ -26,6 +26,11 @@
             <Input v-model="password" type="password" placeholder="Password" v-bind="componentField" />
           </FormControl>
           <FormMessage />
+          <span 
+            v-if="errorMessage"
+            class="inline-block mt-1 text-sm font-medium text-destructive">
+            {{ errorMessage }}
+          </span>
         </FormItem>
       </FormField>
       <Button type="submit">
@@ -47,6 +52,7 @@
   import { MoveLeft } from 'lucide-vue-next'
   const email = ref('')
   const password = ref('')
+  const errorMessage = ref('')
   
   const formSchema = toTypedSchema(z.object({
     email: z.string().email('Invalid email'),
@@ -66,7 +72,10 @@
   });
 
   if (error) {
-    console.error('Login failed:', error.message);
+    errorMessage.value = 'Email Address or Password is not correct';
+    setTimeout(() => {
+      errorMessage.value = ''
+    }, 3000);
     return;
   }
 
