@@ -51,7 +51,7 @@ export const useStore = defineStore('store', {
         } catch (error) {
         }
         
-        navigateTo('/files')
+        navigateTo('/')
     },
 
     async updateFile(id, title, description) {
