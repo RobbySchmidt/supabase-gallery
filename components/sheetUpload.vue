@@ -12,8 +12,8 @@
         </SheetHeader>
         <div class="space-y-6 space-x-2">
           <Input v-model="fileInput" type="file" @change="handleFileUpload" placeholder="Image"/>
-          <Input v-model="title" placeholder="Title"/>
-          <Textarea rows="1" v-model="description" placeholder="Description"/>
+          <Input spellcheck="false" v-model="title" placeholder="Title"/>
+          <Textarea spellcheck="false" rows="1" v-model="description" placeholder="Description"/>
           <Button @click="upload()">Upload</Button>
           <SheetClose as-child>
             <Button @click="upload()">Upload and close</Button>
