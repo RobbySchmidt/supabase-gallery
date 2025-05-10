@@ -1,5 +1,14 @@
 <template>
-  <div class="container mx-auto">
+  <div class="container mx-auto space-y-4">
+    <div class="max-w-xl mx-auto">
+      <Button
+        @click="$router.back" 
+        class="group gap-1">
+        <MoveLeft
+          class="inline-block transition-transform lg:group-hover:-translate-x-1 w-5 h-5"/>
+          Back to Gallery
+      </Button>
+    </div>
     <form class="max-w-xl space-y-6 mx-auto" @submit="onSubmit">
       <FormField v-slot="{ componentField }" name="email" :validate-on-blur="!isFieldDirty">
         <FormItem>
@@ -35,7 +44,7 @@
   import { h } from 'vue'
   import * as z from 'zod'
   import { toast } from 'vue-sonner'
-
+  import { MoveLeft } from 'lucide-vue-next'
   const email = ref('')
   const password = ref('')
   
@@ -66,7 +75,7 @@
   toast('Success', {
     description: 'You have been logged in'
   })
-  navigateTo('/files');
+  navigateTo('/');
 });
 
 </script>

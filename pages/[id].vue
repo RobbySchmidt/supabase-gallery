@@ -12,12 +12,13 @@
       <h2 class="my-2 text-xl font-semibold">{{ image.title }}</h2>
       <div class="text-gray-500" v-html="image.description"></div>
     </div>
-    <sheetUpdate :image="image"/>
+    <sheetUpdate v-if="user" :image="image"/>
   </div>
 </template>
 
 <script setup>
   import { MoveLeft } from 'lucide-vue-next'
+  const user = useSupabaseUser()
   const store = useStore()
   const { params } = useRoute()
 
