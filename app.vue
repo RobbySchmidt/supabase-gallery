@@ -1,10 +1,8 @@
 <template>
-  <UApp>
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
-    <Toaster />
-  </UApp>
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
+  <Toaster />
 </template>
 
 <script setup>
