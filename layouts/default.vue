@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6 space-y-6">
+  <div class="p-4 space-y-0 md:space-y-4">
     <Button
       v-if="user"
       @click="signOut" 
