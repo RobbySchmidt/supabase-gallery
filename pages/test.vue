@@ -1,49 +1,54 @@
 <template>
-  <div class="space-y-4">
-    <div>
-      <input 
-        type="text"
-        v-model="addTask"
-        class="ring rounded-xs w-fit mr-4">
-        <Button 
-          @click="insertTask()" 
-          class="w-fit">
-          create Task
-        </Button>
-    </div>
-    <div v-for="task in tasks" :key="task.id" class="flex items-center gap-2">
-      <span :class="{ 'line-through' :task.done }">
-        {{ task.todo }}
-      </span>
-      <input 
-        type="text"
-        v-model="updTask"
-        class="ring rounded-xs w-fit">
-      <span 
-        @click="checkTask(task.id)" 
-        class="text-white bg-green-500 border-2 border-green-500 rounded-full p-1 cursor-pointer">
-        <Check class="size-4" />
-      </span>
-      <span 
-        @click="updateTask(task.id)" 
-        class="text-white bg-yellow-500 border-2 border-yellow-500 rounded-full p-1 cursor-pointer">
-        <Pen class="size-4" />
-      </span>
-      <span 
-        @click="deleteTask(task.id)" 
-        class="text-white bg-red-500 border-2 border-red-500 rounded-full p-1 cursor-pointer">
-        <X class="size-4" />
-      </span>
+  <div class="container mx-auto">
+    <div class="space-y-4 lg:w-8/12 mx-auto">
+      <div class="flex gap-2 items-center justify-between">
+        <input 
+          type="text"
+          spellcheck="false"
+          v-model="newTask"
+          class="ring rounded-xs w-full">
+          <Button 
+            @click="addTask()">
+            create Task
+          </Button>
+      </div>
+      <div>
+        <span v-if="successMessage" class="text-green-500">
+          {{ successMessage }}
+        </span>
+        <span v-if="errorMessage" class="text-red-500">
+          {{ errorMessage }}
+        </span>
+      </div>
+      <div v-for="task in tasks" :key="task.id" class="flex items-center justify-between">
+        <span :class="{ 'line-through' :task.done }">
+          {{ task.todo }}
+        </span>
+        <div class="flex gap-2">
+          <span 
+            @click="checkTask(task.id)" 
+            class="text-white bg-green-500 border-2 border-green-500 rounded-full p-1 cursor-pointer flex-none block"
+            :class="{ 'bg-yellow-500 border-yellow-500' :task.done }">
+            <Check class="size-4" />
+          </span>
+          <span 
+            @click="deleteTask(task.id)" 
+            class="text-white bg-red-500 border-2 border-red-500 rounded-full p-1 cursor-pointer flex-none block">
+            <X class="size-4" />
+          </span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
   import { Pen, Check, X } from 'lucide-vue-next'
-  const addTask = ref('')
-  const updTask = ref('')
+  const newTask = ref('')
   const tasks = ref([])
   const supabase = useSupabaseClient();
+  const successMessage = ref('')
+  const errorMessage = ref('')
 
   async function fetchTasks() {
     const { data, error } = await supabase
@@ -53,29 +58,33 @@
       tasks.value = data
   }
 
-  async function insertTask() {
-    const { data, error } = await supabase
-      .from('test')
-      .insert([
-        { todo: addTask.value },
-      ])
-      .select()
+  async function addTask() {
+    if(newTask.value) {
+      const { data, error } = await supabase
+        .from('test')
+        .insert([
+          { todo: newTask.value },
+        ])
+        .select()
+  
+        await fetchTasks()
+  
+        successMessage.value = `New Task "${newTask.value}" has been successfully added`
 
-      await fetchTasks()
+        newTask.value = ''
 
-      addTask.value = ''
-  }
+        setTimeout(() => {
+          successMessage.value = ''
+        }, 3000);
+    }
 
-  async function updateTask(id) {
-    const { data, error } = await supabase
-      .from('test')
-      .update({ todo: updTask.value })
-      .eq('id', id)
-      .select()
+    else {
+      errorMessage.value = 'no Task has been added'
 
-      await fetchTasks()
-
-      newTask.value = ''
+      setTimeout(() => {
+        errorMessage.value = ''
+      }, 3000);
+    }
   }
 
   async function checkTask(id) {
