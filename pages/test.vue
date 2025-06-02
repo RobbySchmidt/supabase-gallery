@@ -27,8 +27,8 @@
         <div class="flex gap-2">
           <span 
             @click="checkTask(task.id)" 
-            class="text-white bg-green-500 border-2 border-green-500 rounded-full p-1 cursor-pointer flex-none block"
-            :class="{ 'bg-yellow-500 border-yellow-500' :task.done }">
+            class="text-white border-2 rounded-full p-1 cursor-pointer flex-none block"
+            :class="task.done ? 'bg-green-500 border-green-500' : 'bg-yellow-500 border-yellow-500'">
             <Check class="size-4" />
           </span>
           <span 
@@ -97,9 +97,6 @@
       .select()
 
       await fetchTasks()
-
-      console.log(data)
-      console.error(error)
   }
 
   async function deleteTask(id) {
