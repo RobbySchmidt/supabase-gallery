@@ -12,6 +12,14 @@
             create Task
           </Button>
       </div>
+      <div>
+        <span v-if="successMessage" class="text-green-500">
+          {{ successMessage }}
+        </span>
+        <span v-if="errorMessage" class="text-red-500">
+          {{ errorMessage }}
+        </span>
+      </div>
       <div v-for="task in tasks" :key="task.id" class="flex items-center justify-between">
         <span :class="{ 'line-through' :task.done }">
           {{ task.todo }}
@@ -39,6 +47,8 @@
   const newTask = ref('')
   const tasks = ref([])
   const supabase = useSupabaseClient();
+  const successMessage = ref('')
+  const errorMessage = ref('')
 
   async function fetchTasks() {
     const { data, error } = await supabase
@@ -49,16 +59,32 @@
   }
 
   async function addTask() {
-    const { data, error } = await supabase
-      .from('test')
-      .insert([
-        { todo: newTask.value },
-      ])
-      .select()
+    if(newTask.value) {
+      const { data, error } = await supabase
+        .from('test')
+        .insert([
+          { todo: newTask.value },
+        ])
+        .select()
+  
+        await fetchTasks()
+  
+        successMessage.value = `New Task "${newTask.value}" has been successfully added`
 
-      await fetchTasks()
+        newTask.value = ''
 
-      newTask.value = ''
+        setTimeout(() => {
+          successMessage.value = ''
+        }, 3000);
+    }
+
+    else {
+      errorMessage.value = 'no Task has been added'
+
+      setTimeout(() => {
+        errorMessage.value = ''
+      }, 3000);
+    }
   }
 
   async function checkTask(id) {
