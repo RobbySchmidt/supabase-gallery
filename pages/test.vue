@@ -43,7 +43,7 @@
 </template>
 
 <script setup>
-  import { Pen, Check, X } from 'lucide-vue-next'
+  import { Check, X } from 'lucide-vue-next'
   const newTask = ref('')
   const tasks = ref([])
   const supabase = useSupabaseClient();
@@ -51,35 +51,35 @@
   const errorMessage = ref('')
 
   async function fetchTasks() {
-    const { data, error } = await supabase
-      .from('test')
-      .select('*')
-      
+    try {
+      const data = await $fetch('/api/tasks')
       tasks.value = data
+    } catch (err) {
+      errorMessage.value = 'Failed to fetch tasks'
+      console.error(err)
+    }
   }
+
 
   async function addTask() {
     if(newTask.value) {
-      const { data, error } = await supabase
-        .from('test')
-        .insert([
-          { todo: newTask.value },
-        ])
-        .select()
+      const data = await $fetch('/api/tasks', {
+        method: 'POST',
+        body: { todo: newTask.value }
+      })
   
-        await fetchTasks()
-  
-        successMessage.value = `New Task "${newTask.value}" has been successfully added`
+      successMessage.value = `New Task "${newTask.value}" has been successfully added`
+      newTask.value = ''
+      await fetchTasks()
 
-        newTask.value = ''
-
-        setTimeout(() => {
-          successMessage.value = ''
-        }, 3000);
+      setTimeout(() => {
+        successMessage.value = ''
+      }, 3000);
     }
 
     else {
       errorMessage.value = 'no Task has been added'
+      console.error(err)
 
       setTimeout(() => {
         errorMessage.value = ''
@@ -88,24 +88,47 @@
   }
 
   async function checkTask(id) {
-    const task = tasks.value.find(t => t.id === id);
-    const updatedDone = !task.done;
-    const { data, error } = await supabase
-      .from('test')
-      .update({ done: updatedDone })
-      .eq('id', id)
-      .select()
+    const task = tasks.value.find(t => t.id === id)
+    if (!task) return
+
+    const updatedDone = !task.done
+
+    try {
+      await $fetch('/api/tasks', {
+        method: 'PATCH',
+        body: {
+          id: task.id,
+          done: updatedDone
+        }
+      })
 
       await fetchTasks()
+    } catch (err) {
+      console.error('Error updating task status:', err)
+      errorMessage.value = 'Failed to update task'
+      setTimeout(() => {
+        errorMessage.value = ''
+      }, 3000)
+    }
   }
 
   async function deleteTask(id) {
-    const { error } = await supabase
-      .from('test')
-      .delete()
-      .eq('id', id)
+     try {
+      await $fetch('/api/tasks', {
+        method: 'DELETE',
+        body: {
+          id: id,
+        }
+      })
 
       await fetchTasks()
+    } catch (err) {
+      console.error('Error delete task status:', err)
+      errorMessage.value = 'Failed to delete task'
+      setTimeout(() => {
+        errorMessage.value = ''
+      }, 3000)
+    }
   }
 
   onMounted(fetchTasks)
