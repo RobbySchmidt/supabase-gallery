@@ -63,27 +63,27 @@
 
   async function addTask() {
     if(newTask.value) {
-      const data = await $fetch('/api/tasks', {
-        method: 'POST',
-        body: { todo: newTask.value }
-      })
-  
-      successMessage.value = `New Task "${newTask.value}" has been successfully added`
-      newTask.value = ''
-      await fetchTasks()
+      try {
+        await $fetch('/api/tasks', {
+          method: 'POST',
+          body: { todo: newTask.value }
+        })
 
-      setTimeout(() => {
-        successMessage.value = ''
+        successMessage.value = `New Task "${newTask.value}" has been successfully added`
+        newTask.value = ''
+        await fetchTasks()
+
+        setTimeout(() => {
+          successMessage.value = ''
       }, 3000);
-    }
 
-    else {
-      errorMessage.value = 'no Task has been added'
-      console.error(err)
-
-      setTimeout(() => {
-        errorMessage.value = ''
-      }, 3000);
+      } catch (err) {
+        console.error('Error updating task status:', err)
+        errorMessage.value = 'Failed to update task'
+        setTimeout(() => {
+          errorMessage.value = ''
+        }, 3000)
+      }
     }
   }
 
