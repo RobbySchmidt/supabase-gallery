@@ -78,8 +78,8 @@
       }, 3000);
 
       } catch (err) {
-        console.error('Error updating task status:', err)
-        errorMessage.value = 'Failed to update task'
+        console.error('Error creating task status:', err)
+        errorMessage.value = 'Failed to create task'
         setTimeout(() => {
           errorMessage.value = ''
         }, 3000)
