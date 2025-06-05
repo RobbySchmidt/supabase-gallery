@@ -79,7 +79,6 @@
     return;
   }
 
-  console.log(values)
 
   toast('Success', {
     description: 'You have been logged in'
