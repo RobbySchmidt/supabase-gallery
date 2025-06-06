@@ -52,7 +52,7 @@
 
   async function fetchTasks() {
     try {
-      const data = await $fetch('/api/tasks')
+      const data = await $fetch('/api/tasks/get')
       tasks.value = data
     } catch (err) {
       errorMessage.value = 'Failed to fetch tasks'
@@ -64,7 +64,7 @@
   async function addTask() {
     if(newTask.value) {
       try {
-        await $fetch('/api/tasks', {
+        await $fetch('/api/tasks/post', {
           method: 'POST',
           body: { todo: newTask.value }
         })
@@ -94,7 +94,7 @@
     const updatedDone = !task.done
 
     try {
-      await $fetch('/api/tasks', {
+      await $fetch('/api/tasks/patch', {
         method: 'PATCH',
         body: {
           id: task.id,
@@ -114,7 +114,7 @@
 
   async function deleteTask(id) {
      try {
-      await $fetch('/api/tasks', {
+      await $fetch('/api/tasks/delete', {
         method: 'DELETE',
         body: {
           id: id,
