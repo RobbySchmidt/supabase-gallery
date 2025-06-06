@@ -13,9 +13,6 @@
           </Button>
       </div>
       <div>
-        <span v-if="successMessage" class="text-green-500">
-          {{ successMessage }}
-        </span>
         <span v-if="errorMessage" class="text-red-500">
           {{ errorMessage }}
         </span>
@@ -44,9 +41,9 @@
 
 <script setup>
   import { Check, X } from 'lucide-vue-next'
+  import { toast } from 'vue-sonner'
   const newTask = ref('')
   const tasks = ref([])
-  const supabase = useSupabaseClient();
   const successMessage = ref('')
   const errorMessage = ref('')
 
@@ -55,7 +52,7 @@
       const data = await $fetch('/api/tasks/get')
       tasks.value = data
     } catch (err) {
-      errorMessage.value = 'Failed to fetch tasks'
+      errorMessage.value = 'Failed to fetch Tasks'
       console.error(err)
     }
   }
@@ -69,20 +66,20 @@
           body: { todo: newTask.value }
         })
 
-        successMessage.value = `New Task "${newTask.value}" has been successfully added`
-        newTask.value = ''
-        await fetchTasks()
+        toast('Success', {
+          description: `New Task "${newTask.value}" has been successfully added`
+        })
 
-        setTimeout(() => {
-          successMessage.value = ''
-      }, 3000);
+        newTask.value = ''
+
+        await fetchTasks()
 
       } catch (err) {
         console.error('Error creating task status:', err)
-        errorMessage.value = 'Failed to create task'
-        setTimeout(() => {
-          errorMessage.value = ''
-        }, 3000)
+        
+        toast('Error', {
+          description: 'Failed to create Task'
+        })
       }
     }
   }
@@ -102,13 +99,17 @@
         }
       })
 
+      toast('Success', {
+        description: 'Status of Task has been updated'
+      })
+
       await fetchTasks()
     } catch (err) {
       console.error('Error updating task status:', err)
-      errorMessage.value = 'Failed to update task'
-      setTimeout(() => {
-        errorMessage.value = ''
-      }, 3000)
+
+      toast('Error', {
+        description: 'Failed to update Task'
+      })
     }
   }
 
@@ -121,13 +122,17 @@
         }
       })
 
+      toast('Success', {
+        description: 'The Task hase been deleted'
+      })
+
       await fetchTasks()
     } catch (err) {
       console.error('Error delete task status:', err)
-      errorMessage.value = 'Failed to delete task'
-      setTimeout(() => {
-        errorMessage.value = ''
-      }, 3000)
+
+      toast('Error', {
+        description: 'Failed to delete Task'
+      })
     }
   }
 
