@@ -43,20 +43,11 @@
   import { Check, X } from 'lucide-vue-next'
   import { toast } from 'vue-sonner'
   const newTask = ref('')
-  const tasks = ref([])
   const successMessage = ref('')
   const errorMessage = ref('')
 
-  async function fetchTasks() {
-    try {
-      const data = await $fetch('/api/tasks/get')
-      tasks.value = data
-    } catch (err) {
-      errorMessage.value = 'Failed to fetch Tasks'
-      console.error(err)
-    }
-  }
-
+  const store = useStore()
+  const { tasks } = storeToRefs(store)
 
   async function addTask() {
     if(newTask.value) {
@@ -72,7 +63,7 @@
 
         newTask.value = ''
 
-        await fetchTasks()
+        await store.getTasks()
 
       } catch (err) {
         console.error('Error creating task status:', err)
@@ -103,7 +94,7 @@
         description: 'Status of Task has been updated'
       })
 
-      await fetchTasks()
+      await store.getTasks()
     } catch (err) {
       console.error('Error updating task status:', err)
 
@@ -126,7 +117,7 @@
         description: 'The Task hase been deleted'
       })
 
-      await fetchTasks()
+      await store.getTasks()
     } catch (err) {
       console.error('Error delete task status:', err)
 
@@ -136,7 +127,6 @@
     }
   }
 
-  onMounted(fetchTasks)
 </script>
 
 <style scoped>
