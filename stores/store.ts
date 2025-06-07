@@ -4,7 +4,8 @@ import { toast } from 'vue-sonner'
 
 export const useStore = defineStore('store', {
   state: () => ({
-    files: []
+    files: [],
+    tasks: []
   }),
   getters: {
     getFileById: (state) => (id: any) => {
@@ -12,7 +13,19 @@ export const useStore = defineStore('store', {
     },
   },
 
-  actions: { 
+  actions: {
+    async getTasks() {
+      try {
+        const data = await $fetch('/api/tasks/get')
+        this.tasks = data
+      } catch (err) {
+        console.error('Failed to fetch tasks:', err)
+        toast('Error', {
+          description: 'Failed to fetch tasks'
+        })
+      }
+    },
+
     async getFiles() {
       const supabase = useSupabaseClient()
       const { data: files, error } = await supabase

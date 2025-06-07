@@ -10,7 +10,7 @@
 
   const loadData = ref(false)
 
-  Promise.all([store.getFiles()]).then((values) => {
+  Promise.all([store.getFiles(), store.getTasks()]).then((values) => {
     loadData.value = true;  
   });
 </script>
