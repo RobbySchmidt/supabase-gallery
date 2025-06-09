@@ -131,10 +131,11 @@
 
   async function deleteTask(id) {
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('test')
         .delete()
         .eq('id', id)
+        .select()
 
         if (error) {
           errorMessage.value = error.message
