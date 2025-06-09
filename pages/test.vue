@@ -52,67 +52,94 @@
   const errorMessage = ref('')
 
   async function fetchTasks() {
-    const { data, error } = await supabase
-      .from('test')
-      .select('*')
-      
-      tasks.value = data
+    try {
+      const { data, error } = await supabase
+        .from('test')
+        .select('*')
+        .order('created_at', { ascending: false })
+        
+        tasks.value = data
+    } catch (err) {
+      console.error('Error fetching tasks status:', err)
+
+      toast('Error', {
+        description: 'Failed to fetch Tasks'
+      })
+    }
   }
 
   async function addTask() {
     if(newTask.value) {
-      const { data, error } = await supabase
-        .from('test')
-        .insert([
-          { todo: newTask.value },
-        ])
-        .select()
-  
-        await fetchTasks()
-  
+      try {
+        const { data, error } = await supabase
+          .from('test')
+          .insert([
+            { todo: newTask.value },
+          ])
+          .select()
+
         toast('Success', {
           description: `New Task "${newTask.value}" has been successfully added`
         })
 
         newTask.value = ''
-    }
+  
+        await fetchTasks()
 
-    else {
-      errorMessage.value = 'no Task has been added'
-
-      setTimeout(() => {
-        errorMessage.value = ''
-      }, 3000);
+      } catch (err) {
+        console.error('Error creating task status:', err)
+        
+        toast('Error', {
+          description: 'Failed to create Task'
+        })
+      }
     }
   }
 
   async function checkTask(id) {
     const task = tasks.value.find(t => t.id === id);
     const updatedDone = !task.done;
-    const { data, error } = await supabase
-      .from('test')
-      .update({ done: updatedDone })
-      .eq('id', id)
-      .select()
 
-      toast('Success', {
-        description: 'Status of Task has been updated'
+    try {
+      const { data, error } = await supabase
+        .from('test')
+        .update({ done: updatedDone })
+        .eq('id', id)
+        .select()
+  
+        toast('Success', {
+          description: 'Status of Task has been updated'
+        })
+  
+        await fetchTasks()
+    } catch (err) {
+      console.error('Error updating task status:', err)
+
+      toast('Error', {
+        description: 'Failed to update Task'
       })
-
-      await fetchTasks()
+    }
   }
 
   async function deleteTask(id) {
-    const { error } = await supabase
-      .from('test')
-      .delete()
-      .eq('id', id)
+    try {
+      const { error } = await supabase
+        .from('test')
+        .delete()
+        .eq('id', id)
+  
+        toast('Success', {
+          description: 'The Task hase been deleted'
+        })
+  
+        await fetchTasks()
+    } catch (err) {
+      console.error('Error delete task status:', err)
 
-      toast('Success', {
-        description: 'The Task hase been deleted'
+      toast('Error', {
+        description: 'Failed to delete Task'
       })
-
-      await fetchTasks()
+    }
   }
 
   onMounted(fetchTasks)
