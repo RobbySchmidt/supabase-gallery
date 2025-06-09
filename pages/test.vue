@@ -13,9 +13,6 @@
           </Button>
       </div>
       <div>
-        <span v-if="successMessage" class="text-green-500">
-          {{ successMessage }}
-        </span>
         <span v-if="errorMessage" class="text-red-500">
           {{ errorMessage }}
         </span>
@@ -47,9 +44,8 @@
   import { toast } from 'vue-sonner'
   const newTask = ref('')
   const tasks = ref([])
-  const supabase = useSupabaseClient();
-  const successMessage = ref('')
   const errorMessage = ref('')
+  const supabase = useSupabaseClient();
 
   async function fetchTasks() {
     try {
@@ -57,6 +53,10 @@
         .from('test')
         .select('*')
         .order('created_at', { ascending: false })
+
+        if (error) {
+          errorMessage.value = error.message
+        }
         
         tasks.value = data
     } catch (err) {
@@ -77,6 +77,10 @@
             { todo: newTask.value },
           ])
           .select()
+
+          if (error) {
+            errorMessage.value = error.message
+          }
 
         toast('Success', {
           description: `New Task "${newTask.value}" has been successfully added`
@@ -106,6 +110,10 @@
         .update({ done: updatedDone })
         .eq('id', id)
         .select()
+
+        if (error) {
+          errorMessage.value = error.message
+        }
   
         toast('Success', {
           description: 'Status of Task has been updated'
@@ -127,6 +135,10 @@
         .from('test')
         .delete()
         .eq('id', id)
+
+        if (error) {
+          errorMessage.value = error.message
+        }
   
         toast('Success', {
           description: 'The Task hase been deleted'
